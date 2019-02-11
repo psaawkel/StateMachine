@@ -5,40 +5,64 @@
  *      Author: Paul
  */
 
-#include "..\include\IStateMachine.hpp"
 #include "..\include\StateMachine.hpp"
+#include "..\include\TransitionEntry.hpp"
 #include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
 
-StateMachine::StateMachine(){
-	cout << "StateMachine created" << endl;
+StateMachine::StateMachine(string name):IState(name){
 }
 
-StateMachine::StateMachine(IStateMachine *parent){
+StateMachine::StateMachine(IStateMachine *parent, string name):IState(name){
 	this->parent = parent;
 }
 
 StateMachine::~StateMachine(){
+}
+
+void StateMachine::onMessage(Message message){
+
+	for(TransitionEntry entry : transitionList){
+		if(entry.currentState==currentState&&entry.message==message){
+			currentState=entry.nextState;
+			cout << "changing " << entry.currentState->getName() << " ---> " << entry.nextState->getName()<< endl;
+			currentState->run();
+			return;
+		}
+	}
+
+	cout<< "message not recognized" << endl;
+	if(parent!=nullptr) {
+		cout<<"throwing message to parent"<<endl;
+		parent->onMessage(message);
+	}
 
 }
 
-void StateMachine::onMessage(int number){
+bool StateMachine::addTransitionTableEntry(IState *current, Message message, IState *next){
+	TransitionEntry entry;
 
-	switch(number){
-	case 0:
-		cout << "message 0" << endl;
-		break;
-
-	case 1:
-		cout << "message 0" << endl;
-		break;
-
-	default:
-		cout << "default" << endl;
-		if(parent!=nullptr) {
-			cout << "throwing to parent" << endl;
-			parent->onMessage(number);
+	for(TransitionEntry entry : transitionList){
+		if(entry.currentState==current&&entry.message==message){
+			cout<<"adding transition table entry failed - this event from this state is arleady on the list" << endl;
+			return false;
 		}
-		break;
 	}
+	if(transitionList.size()==0) currentState = current;
+	entry.currentState=current;
+	entry.message=message;
+	entry.nextState=next;
+	transitionList.push_back(entry);
+	return true;
+}
+
+IState* StateMachine::getCurrentState(){
+	return currentState;
+}
+
+void StateMachine::run(){
+	currentState=transitionList[0].currentState;
+	currentState->run();
 }

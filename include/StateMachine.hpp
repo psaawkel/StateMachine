@@ -2,14 +2,19 @@
 #define STATEMACHINE_HPP_
 
 #include "..\include\IStateMachine.hpp"
+#include "..\include\IState.hpp"
 
-class StateMachine : public IStateMachine
+class StateMachine : public IStateMachine, public IState
 {
 public:
-	StateMachine();
-	StateMachine(IStateMachine *parent);
+	StateMachine(string name);
+	StateMachine(IStateMachine *parent, string name);
 	~StateMachine();
-	void onMessage(int number);
+	void onMessage(Message message);
+	bool addTransitionTableEntry(IState *current, Message, IState *next);
+	IState* getCurrentState();
+	void run();
+
 };
 
 #endif

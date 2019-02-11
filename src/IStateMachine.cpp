@@ -7,13 +7,6 @@
 
 #include "..\include\IStateMachine.hpp"
 
-//IStateMachine::IStateMachine(){
-//}
-//
-//IStateMachine::IStateMachine(IStateMachine *parent){
-//	this->parent = parent;
-//}
-//
 IStateMachine::~IStateMachine(){
 
 }

@@ -8,11 +8,16 @@
 #include "..\include\StateMachine.hpp"
 using namespace std;
 
-int main() {
-	StateMachine *machine = new StateMachine();
+#define BOOST_TEST_MODULE MyTest
+#include <boost/test/included/unit_test.hpp\> //single-header
+#include <string>
 
-	for(int i = 0; i<50; i++)
-	machine->printSomething(i*2);
+BOOST_AUTO_TEST_CASE(my_boost_test)
+{
+    std::string expected_value = "Bill";
 
-	return 0;
+    // assume MyClass is defined in MyClass.h
+    // and get_value() has public accessibility
+    MyClass mc;
+    BOOST_CHECK(expected_value == mc.get_value());
 }
