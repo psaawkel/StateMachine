@@ -59,22 +59,5 @@ int main() {
  	slaveMachine->onMessage(Message::STOP_PLAYBACK);
  	slaveMachine->onMessage(Message::POWER_OFF);
 
-
-//
-//	IStateMachine *machine = new StateMachine("odtwarzacz");
-//	IState *state1 = new State("gra");
-//	IState *state2 = new State("nie gra");
-//
-//	machine->addTransitionTableEntry(state2,Message::PLAY,state1);
-//	machine->addTransitionTableEntry(state1,Message::STOP,state2);
-//
-//	machine->onMessage(Message::PLAY);
-//	machine->onMessage(Message::PLAY);
-//	machine->onMessage(Message::STOP);
-//	machine->onMessage(Message::PLAY);
-//	machine->onMessage(Message::STOP);
-
-
-
 	return 0;
 }
